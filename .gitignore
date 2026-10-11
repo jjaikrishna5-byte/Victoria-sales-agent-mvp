@@ -84,3 +84,34 @@ __pycache__/
 *.before-*.py
 *.before-*.html
 fix_ui.py
+
+# Credentials and environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local databases and company backups
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.bacpac
+*.mdf
+*.ldf
+*.csv
+*.xlsx
+
+# Development backups
+*.backup.py
+*.backup.html
+*.before-*.py
+*.before-*.html
+backup-*/

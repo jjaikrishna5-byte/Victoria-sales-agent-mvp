@@ -1,219 +1,97 @@
-
+"""Victoria MVP. Confidential reporting APIs are restricted to loopback connections."""
 from pathlib import Path
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
+from pydantic import BaseModel, ConfigDict, Field
+from agent import answer_sales_question, answer_real_sales_question
+from sales_service import get_sales_overview, get_trend, compare_months, get_available_months
+from sql_reporting import get_real_sales_summary, get_dashboard_data
 import logging
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
-from pydantic import BaseModel, ConfigDict, Field
-
-from agent import (
-    answer_sales_question,
-    answer_real_sales_question,
-)
-
-from sales_service import (
-    get_sales_overview,
-    get_trend,
-    compare_months,
-    get_available_months,
-)
-
-from sql_reporting import get_real_sales_summary
-
-
-# ==========================================
-# CONFIGURATION
-# ==========================================
-
-BASE_DIR = Path(__file__).resolve().parent
-
-logger = logging.getLogger("victoria-api")
-
-app = FastAPI(
-    title="Victoria Sales Agent MVP",
-    version="1.2",
-)
-
-
-# ==========================================
-# REQUEST AND RESPONSE MODELS
-# ==========================================
+logger = logging.getLogger('victoria')
+ROOT = Path(__file__).resolve().parent
+app = FastAPI(title='Victoria Sales Agent MVP', version='2.0')
 
 class ChatRequest(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
+    question: str = Field(min_length=1, max_length=2000)
 
-    question: str = Field(
-        min_length=1,
-        max_length=2000,
-    )
+@app.middleware('http')
+async def local_only(request: Request, call_next):
+    # This is an MVP local-only guard, NOT enterprise authentication.
+    # Do not deploy this app behind an exposed reverse proxy without proper auth.
+    if request.client and request.client.host not in ('127.0.0.1', '::1', 'testclient'):
+        return JSONResponse({'detail':'Local access only'}, status_code=403)
+    return await call_next(request)
 
-
-class ChatResponse(BaseModel):
-    answer: str
-    mode: str = "sample_database"
-
-
-# ==========================================
-# FRONTEND
-# ==========================================
-
-@app.get("/", include_in_schema=False)
-@app.get("/index.html", include_in_schema=False)
+@app.get('/', include_in_schema=False)
+@app.get('/index.html', include_in_schema=False)
 def index():
-    return FileResponse(BASE_DIR / "index.html")
+    return FileResponse(ROOT / 'index.html')
 
-
-@app.get("/victoria-logo.png", include_in_schema=False)
+@app.get('/victoria-logo.png', include_in_schema=False)
 def logo():
-    filename = BASE_DIR / "victoria-logo.png"
+    if not (ROOT / 'victoria-logo.png').exists():
+        raise HTTPException(404, 'Logo not found')
+    return FileResponse(ROOT / 'victoria-logo.png')
 
-    if not filename.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="Logo not available",
-        )
-
-    return FileResponse(filename)
-
-
-# ==========================================
-# HEALTH CHECK
-# ==========================================
-
-@app.get("/health")
+@app.get('/health')
 def health():
-    return {
-        "status": "healthy",
-        "service": "Victoria Sales Agent MVP",
-        "demo_database": "available",
-        "real_sql_reporting": "configured",
-    }
+    return {'status':'healthy', 'mode':'real_reporting_mvp'}
 
-
-# ==========================================
-# EXISTING DEMO SALES ENDPOINTS
-# ==========================================
-
-@app.get("/api/sales/months")
+@app.get('/api/sales/months')
 def months():
     try:
-        return {"months": get_available_months()}
-
+        return {'months': get_available_months(), 'mode':'sample_database'}
     except Exception:
-        logger.exception("Unable to retrieve demo months")
-        raise HTTPException(
-            status_code=503,
-            detail="Sales database unavailable",
-        )
+        raise HTTPException(503, 'Sample sales database unavailable')
 
-
-@app.get("/api/sales/overview")
-def overview(month: str = "2026-09"):
+@app.get('/api/sales/overview')
+def overview(month: str = '2026-09'):
     try:
         return get_sales_overview(month)
-
     except ValueError as exc:
-        raise HTTPException(
-            status_code=400,
-            detail=str(exc),
-        )
-
+        raise HTTPException(400, str(exc))
     except Exception:
-        logger.exception("Demo overview failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Sales database unavailable",
-        )
+        logger.exception('Demo overview failed')
+        raise HTTPException(503, 'Sample sales database unavailable')
 
-
-@app.get("/api/sales/trend")
+@app.get('/api/sales/trend')
 def trend():
-    try:
-        return {
-            "currency": "USD",
-            "mode": "sample_database",
-            "trend": get_trend(),
-        }
+    return {'mode':'sample_database', 'trend':get_trend()}
 
-    except Exception:
-        logger.exception("Demo sales trend failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Sales database unavailable",
-        )
-
-
-@app.get("/api/sales/compare")
+@app.get('/api/sales/compare')
 def compare(first: str, second: str):
-    try:
-        return compare_months(first, second)
+    return compare_months(first, second)
 
-    except ValueError as exc:
-        raise HTTPException(
-            status_code=400,
-            detail=str(exc),
-        )
+@app.post('/api/chat')
+def demo_chat(body: ChatRequest):
+    return {'mode':'sample_database', 'answer':answer_sales_question(body.question)}
 
-    except Exception:
-        logger.exception("Demo comparison failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Sales database unavailable",
-        )
-
-
-# ==========================================
-# EXISTING OLLAMA DEMO CHATBOT
-# ==========================================
-
-@app.post("/api/chat", response_model=ChatResponse)
-def chat(body: ChatRequest):
-    try:
-        return ChatResponse(
-            answer=answer_sales_question(body.question),
-            mode="sample_database",
-        )
-
-    except Exception:
-        logger.exception("Demo chat failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Chat service unavailable",
-        )
-
-
-# ==========================================
-# REAL SQL SERVER REPORTING
-# ==========================================
-
-@app.get("/api/sales/real-summary")
-def real_sales_summary():
+@app.get('/api/sales/real-summary')
+def real_summary():
     try:
         return get_real_sales_summary()
-
     except Exception:
-        logger.exception("SQL reporting query failed")
-        raise HTTPException(
-            status_code=503,
-            detail="SQL reporting service unavailable",
-        )
+        logger.exception('SQL reporting unavailable')
+        raise HTTPException(503, 'SQL reporting unavailable: check server, login and password')
 
+@app.get('/api/sales/real-overview')
+def real_overview(month: str | None = None):
+    if month is not None:
+        import re
+        if not re.fullmatch(r'20\d\d-(0[1-9]|1[0-2])', month):
+            raise HTTPException(400, 'Month must be YYYY-MM')
+    try:
+        return get_dashboard_data(month)
+    except Exception:
+        logger.exception('Real dashboard failed')
+        raise HTTPException(503, 'SQL dashboard unavailable: check SQL connection or reporting views')
 
-# ==========================================
-# REAL SQL SERVER + OLLAMA CHATBOT
-# ==========================================
-
-@app.post("/api/chat/real", response_model=ChatResponse)
+@app.post('/api/chat/real')
 def real_chat(body: ChatRequest):
     try:
-        return ChatResponse(
-            answer=answer_real_sales_question(body.question),
-            mode="real_database",
-        )
-
+        return {'mode':'real_database', 'answer':answer_real_sales_question(body.question)}
     except Exception:
-        logger.exception("Real database chat failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Real-data chat service unavailable",
-        )
+        logger.exception('Real chat failed')
+        raise HTTPException(503, 'SQL reporting unavailable: check server, password, and reporting views')

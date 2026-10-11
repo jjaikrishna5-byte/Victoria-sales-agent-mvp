@@ -1,1109 +1,239 @@
-﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Victoria | Sales Intelligence</title>
-
 <style>
-:root {
-  --red: #d71920;
-  --dark: #a80d15;
-  --ink: #291719;
-  --muted: #856f72;
-  --bg: #fff8f8;
-  --line: #f0cdd0;
-  --white: #fff;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-}
-
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-button:disabled { opacity: .55; cursor: wait; }
-
-.app {
-  display: grid;
-  grid-template-columns: 270px minmax(0, 1fr);
-  min-height: 100vh;
-}
-
-.sidebar {
-  background: linear-gradient(155deg, var(--red), var(--dark));
-  color: white;
-  padding: 25px 18px;
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-}
-
-.brand {
-  display: flex;
-  gap: 13px;
-  align-items: center;
-  padding: 5px 5px 28px;
-  border-bottom: 1px solid #ffffff30;
-}
-
-.brand-logo {
-  width: 58px;
-  height: 58px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: white;
-  color: var(--red);
-  font-size: 32px;
-  font-weight: 900;
-}
-
-.brand strong {
-  display: block;
-  font-size: 19px;
-  letter-spacing: .075em;
-}
-
-.brand small {
-  display: block;
-  font-size: 13px;
-  margin-top: 6px;
-  opacity: .85;
-}
-
-.nav-label {
-  margin: 33px 8px 15px;
-  font-size: 12px;
-  letter-spacing: .12em;
-  color: #ffced2;
-  font-weight: 800;
-}
-
-.nav { display: grid; gap: 10px; }
-
-.nav button {
-  color: white;
-  background: none;
-  border: 0;
-  text-align: left;
-  padding: 16px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.nav button.active,
-.nav button:hover {
-  background: #ffffff30;
-}
-
-.user {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-top: 1px solid #ffffff33;
-  padding: 22px 4px 4px;
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  background: white;
-  color: var(--red);
-  border-radius: 50%;
-  width: 43px;
-  height: 43px;
-  font-weight: 900;
-}
-
-.user small {
-  display: block;
-  opacity: .7;
-  margin-top: 4px;
-}
-
-.main { min-width: 0; }
-
-.topbar {
-  height: 80px;
-  background: #fffcfc;
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 38px;
-  color: var(--muted);
-}
-
-.chip {
-  border: 1px solid var(--line);
-  background: #fff0f1;
-  color: var(--red);
-  border-radius: 25px;
-  padding: 10px 15px;
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.content {
-  padding: 32px 38px;
-  max-width: 1500px;
-  margin: auto;
-}
-
-.hero {
-  background: linear-gradient(120deg, #d71920, #aa0710);
-  color: white;
-  border-radius: 23px;
-  padding: 37px 40px;
-  margin-bottom: 27px;
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::after {
-  content: "V";
-  font-size: 280px;
-  font-weight: 900;
-  position: absolute;
-  right: -25px;
-  bottom: -90px;
-  color: #ffffff09;
-  pointer-events: none;
-}
-
-.hero h1 {
-  font-size: clamp(30px, 3.6vw, 43px);
-  margin: 8px 0 14px;
-}
-
-.hero p {
-  color: #ffe4e5;
-  margin: 0 0 25px;
-  line-height: 1.6;
-}
-
-.eyebrow {
-  letter-spacing: .16em;
-  font-size: 11px;
-  font-weight: 850;
-  color: #ffd8db;
-}
-
-.month-control {
-  border: 1px solid #ffffff70;
-  border-radius: 9px;
-  background: #ffffff20;
-  color: white;
-  padding: 10px;
-}
-
-.month-control option { color: var(--ink); }
-
-.kpis {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 25px;
-}
-
-.card {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 10px 32px #9a273008;
-}
-
-.kpi-label {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 700;
-}
-
-.kpi-value {
-  font-size: 29px;
-  font-weight: 900;
-  margin-top: 18px;
-}
-
-.kpi-sub {
-  color: var(--red);
-  font-size: 12px;
-  font-weight: 700;
-  margin-top: 8px;
-}
-
-.panels {
-  display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 18px;
-}
-
-.panel-title {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 8px;
-}
-
-.panel-sub {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.barrow {
-  display: grid;
-  grid-template-columns: 110px minmax(0,1fr) 100px;
-  gap: 12px;
-  align-items: center;
-  margin-top: 19px;
-  font-size: 13px;
-}
-
-.track {
-  background: #ffebed;
-  border-radius: 100px;
-  height: 13px;
-  overflow: hidden;
-}
-
-.fill {
-  background: linear-gradient(90deg, #fa5d65, var(--red));
-  height: 100%;
-  border-radius: 100px;
-}
-
-.listrow {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 15px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #f6e6e7;
-  font-size: 13px;
-}
-
-.listrow:last-child { border: 0; }
-.listrow strong { color: var(--red); }
-
-.suggestions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-  position: relative;
-  z-index: 1;
-}
-
-.suggestion {
-  background: #ffffff18;
-  border: 1px solid #ffffff6b;
-  color: white;
-  border-radius: 30px;
-  padding: 12px 17px;
-  font-weight: 650;
-}
-
-.suggestion:hover { background: #ffffff35; }
-
-.chat-input {
-  display: flex;
-  gap: 10px;
-  background: white;
-  border: 3px solid #ffb9bf;
-  border-radius: 20px;
-  padding: 10px;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
-}
-
-.chat-input input {
-  border: 0;
-  outline: 0;
-  width: 100%;
-  padding: 13px;
-  font-size: 17px;
-  min-width: 0;
-}
-
-.send-btn {
-  background: var(--red);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 13px;
-  font-weight: 800;
-}
-
-.chat-hero { min-height: 460px; }
-
-.reply {
-  background: white;
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 24px;
-  min-height: 80px;
-  line-height: 1.7;
-  white-space: normal;
-  overflow-x: auto;
-  overflow-wrap: anywhere;
-  position: relative;
-  z-index: 1;
-  box-shadow: 0 8px 25px #3b101010;
-}
-
-.reply h2, .reply h3, .reply h4 {
-  color: var(--dark);
-  line-height: 1.35;
-  margin: 20px 0 10px;
-}
-
-.reply h2 { font-size: 23px; }
-.reply h3 { font-size: 19px; }
-.reply h4 { font-size: 16px; }
-
-.reply p { margin: 9px 0; }
-
-.reply strong {
-  font-weight: 800;
-  color: #8d1017;
-}
-
-.reply ul, .reply ol {
-  padding-left: 25px;
-  margin: 12px 0;
-}
-
-.reply li { margin: 6px 0; }
-
-.reply table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 18px 0;
-  background: white;
-  color: var(--ink);
-  font-size: 14px;
-}
-
-.reply th, .reply td {
-  padding: 12px;
-  border: 1px solid var(--line);
-  text-align: left;
-  vertical-align: top;
-}
-
-.reply th {
-  background: #fff0f1;
-  color: var(--dark);
-}
-
-.reply tr:nth-child(even) td {
-  background: #fffafa;
-}
-
-.reply code {
-  background: #fff0f1;
-  color: #8d1017;
-  padding: 2px 5px;
-  border-radius: 5px;
-  font-family: Consolas, monospace;
-}
-
-.reply pre {
-  white-space: pre-wrap;
-  background: #fff7f8;
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.reply blockquote {
-  border-left: 4px solid var(--red);
-  margin: 14px 0;
-  padding: 8px 14px;
-  background: #fff7f8;
-}
-
-.reply hr {
-  border: 0;
-  border-top: 1px solid var(--line);
-  margin: 18px 0;
-}
-
-.notice {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin: 14px 0 25px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 12px;
-  padding-top: 14px;
-}
-
-.footer strong { color: var(--red); }
-.hidden { display: none !important; }
-
-.status {
-  font-size: 12px;
-  color: var(--muted);
-  margin: 10px 0;
-}
-
-@media(max-width:1000px) {
-  .app { grid-template-columns: 210px 1fr; }
-  .kpis { grid-template-columns: repeat(2,1fr); }
-  .panels { grid-template-columns: 1fr; }
-  .content { padding: 22px; }
-}
-
-@media(max-width:650px) {
-  .app { display: block; }
-  .sidebar { height: auto; position: static; padding: 14px; }
-  .brand { padding-bottom: 12px; }
-  .nav-label, .user { display: none; }
-  .nav { display: flex; margin-top: 12px; }
-  .nav button { font-size: 13px; padding: 10px; }
-  .topbar { height: 60px; padding: 0 15px; }
-  .content { padding: 15px; }
-  .hero { padding: 25px; }
-  .kpis { gap: 9px; }
-  .card { padding: 15px; }
-  .kpi-value { font-size: 22px; }
-  .chat-input input { font-size: 14px; }
-  .send-btn { padding: 12px; }
-  .reply { padding: 16px; }
-}
+:root{--red:#ca101d;--dark:#990d19;--bg:#fff7f8;--ink:#2d2023;--line:#efd4d8;--muted:#78696d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,'Segoe UI',Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.6;cursor:wait}
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}.side{background:linear-gradient(155deg,#d0111c,#980b18);color:#fff;padding:26px 16px;display:flex;flex-direction:column}.brand{font-size:25px;font-weight:900;letter-spacing:.08em;padding:12px 13px 30px;border-bottom:1px solid #ffffff45}.brand small{display:block;font-size:12px;font-weight:400;letter-spacing:0}.nav{display:grid;gap:8px;margin-top:28px}.nav button{border:0;background:transparent;color:#fff;text-align:left;font-weight:700;padding:14px;border-radius:11px}.nav button:hover,.nav button.active{background:#ffffff2a}.side footer{margin-top:auto;font-size:12px;opacity:.8;padding:12px}
+.main{min-width:0}.top{height:73px;background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 32px;color:var(--muted)}.content{max-width:1460px;margin:auto;padding:28px 32px}.hero{background:linear-gradient(115deg,#d21420,#a60814);border-radius:22px;padding:34px 38px;color:#fff;margin-bottom:22px}.hero h1{font-size:clamp(30px,3.5vw,43px);line-height:1.2;margin:9px 0 13px}.hero p{color:#ffe7e9;max-width:930px}.tag{font-size:12px;letter-spacing:.12em;font-weight:800}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card,.panel,.answer{background:#fff;border:1px solid var(--line);border-radius:16px;padding:23px;min-width:0}.label{font-size:13px;color:var(--muted)}.value{font-size:29px;font-weight:850;margin-top:12px;overflow-wrap:anywhere}.panels{display:grid;grid-template-columns:1fr 1fr;gap:17px;margin-top:17px}.panel h3{margin:0 0 15px}.small{color:var(--muted);font-size:13px}.listline{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:11px 0}.listline:last-child{border-bottom:none}.listline span{overflow-wrap:anywhere}.listline strong{text-align:right;white-space:nowrap}
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.buttons button{background:#ffffff24;border:1px solid #ffffff89;border-radius:25px;color:#fff;padding:11px 15px;font-weight:700}.buttons button:hover{background:#ffffff43}.inputrow{display:flex;gap:9px;background:#fff;padding:9px;border:3px solid #ffb2b8;border-radius:18px}.inputrow input{flex:1;border:0;outline:0;min-width:0;padding:13px}.inputrow button{border:0;border-radius:12px;background:var(--red);color:white;padding:12px 22px;font-weight:750}.answer{margin-top:19px;min-height:105px;max-height:650px;overflow:auto;line-height:1.75;overflow-wrap:anywhere;color:var(--ink)}.answer> :first-child{margin-top:0}.answer p{margin:10px 0}.answer h2,.answer h3,.answer h4{color:var(--dark);margin:20px 0 9px;line-height:1.35}.answer strong{color:#8c1520}.answer table{border-collapse:collapse;width:100%;margin:15px 0;font-size:14px}.answer th,.answer td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.answer th{background:#fff1f2}.answer tr:nth-child(even) td{background:#fffafb}.answer ul,.answer ol{padding-left:24px}.answer li{margin:5px 0}.answer code{background:#fff0f1;padding:1px 4px;border-radius:4px}.answer pre{white-space:pre-wrap;background:#fff5f6;border-radius:9px;padding:12px}.answer blockquote{margin:12px 0;padding:7px 13px;border-left:3px solid var(--red);background:#fff7f8}.answer hr{border:0;border-top:1px solid var(--line);margin:18px 0}.select{margin-top:8px;padding:10px;border:1px solid #ffd2d5;border-radius:9px;background:#fff;color:var(--ink)}.hidden{display:none!important}.notice,.status{font-size:13px;color:var(--muted);margin:15px 0}.error{color:#a10a19!important}.state{display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;background:#ffe6e8;color:#a50f1c;font-weight:800}
+@media(max-width:960px){.shell{grid-template-columns:185px 1fr}.content{padding:18px}.cards{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}.hero{padding:27px}}@media(max-width:600px){.shell{display:block}.side{padding:12px;min-height:unset}.brand{padding:8px}.side footer{display:none}.nav{display:flex;margin-top:8px}.nav button{padding:10px;font-size:13px}.top{height:57px;padding:0 14px}.content{padding:13px}.cards{grid-template-columns:1fr}.hero{padding:22px}.inputrow button{padding:10px}.answer{padding:16px}}
 </style>
 </head>
-
 <body>
-<div class="app">
-
-<aside class="sidebar">
-
-  <div class="brand">
-    <div class="brand-logo">V</div>
-    <div>
-      <strong>VICTORIA</strong>
-      <small>Sales Intelligence</small>
-    </div>
-  </div>
-
-  <div class="nav-label">WORKSPACE</div>
-
-  <nav class="nav">
-    <button id="navOverview" class="active" type="button"
-      onclick="showPage('overview')">
-      &#9633; &nbsp; Sales overview
-    </button>
-
-    <button id="navChat" type="button"
-      onclick="showPage('chat')">
-      &#10022; &nbsp; Ask Victoria
-    </button>
+<div class="shell">
+ <aside class="side">
+  <div class="brand">VICTORIA<small>Sales Intelligence</small></div>
+  <nav class="nav" aria-label="Main navigation">
+   <button id="navOverview" class="active" type="button">▦ Sales overview</button>
+   <button id="navChat" type="button">✦ Ask Victoria</button>
   </nav>
-
-  <div class="user">
-    <div class="avatar">V</div>
-    <div>
-      <strong>Victoria workspace</strong>
-      <small>Sales intelligence</small>
+  <footer>Internal development MVP</footer>
+ </aside>
+ <main class="main">
+  <header class="top"><span id="crumb">Workspace / Sales overview</span><span class="state">LOCAL MVP</span></header>
+  <div class="content">
+   <section id="overview">
+    <div class="hero">
+     <div class="tag">REAL SQL REPORTING · PRELIMINARY</div>
+     <h1>Sales overview</h1>
+     <p>Transaction-header activity and provisional device quantities. Figures are not confirmed completed sales or revenue.</p>
+     <label for="month">Reporting month</label><br>
+     <select id="month" class="select" aria-label="Reporting month"><option value="">Loading periods…</option></select>
     </div>
+    <div class="cards">
+     <div class="card"><div class="label">Transaction headers</div><div class="value" id="total">—</div><div class="small">All available statuses</div></div>
+     <div class="card"><div class="label">Leading device candidate</div><div class="value" style="font-size:19px" id="device">—</div><div class="small" id="deviceCount">Based on recorded line quantity</div></div>
+     <div class="card"><div class="label">Reporting period</div><div class="value" id="period">—</div><div class="small">Available SQL reporting data</div></div>
+    </div>
+    <div class="panels">
+     <div class="panel"><h3>Top device candidates</h3><div id="devices" class="small">Loading…</div></div>
+     <div class="panel"><h3>Transaction headers by region</h3><div id="regions" class="small">Loading…</div></div>
+    </div>
+    <div id="dashStatus" class="status" role="status" aria-live="polite"></div>
+   </section>
+   <section id="chat" class="hidden">
+    <div class="hero">
+     <div class="tag">✦ REAL SQL REPORTING</div>
+     <h1>Ask Victoria</h1>
+     <p>Ask about monthly transaction counts, comparisons, provisional Samsung quantities, branches and mapped regions.</p>
+     <div class="buttons">
+      <button type="button" data-question="Compare transaction categories between September 2025 and September 2026">Compare years</button>
+      <button type="button" data-question="Which Samsung model has the highest recorded quantity in September 2026?">Top Samsung model</button>
+      <button type="button" data-question="Show branches for September 2026">Branches</button>
+      <button type="button" data-question="How many transactions were recorded in R/A/N category in September 2026?">Transaction count</button>
+     </div>
+     <form id="form" class="inputrow">
+      <input id="question" aria-label="Ask Victoria a question" autocomplete="off" maxlength="2000" placeholder="Ask Victoria a question…" required>
+      <button id="send" type="submit">Send ↑</button>
+     </form>
+     <div id="reply" class="answer" aria-live="polite">Ask a question to get started.</div>
+    </div>
+    <p class="notice">Financial definitions, transaction statuses and geographical mappings require validation. Access is intended for authorized local development only.</p>
+   </section>
+   <p class="notice">Victoria development reporting · SQL Server · Local access only</p>
   </div>
-
-</aside>
-
-<main class="main">
-
-<header class="topbar">
-  <div id="breadcrumb">Workspace / Sales overview</div>
-  <span class="chip">Victoria AI MVP</span>
-</header>
-
-<div class="content">
-
-<section id="overviewPage">
-
-  <div class="hero">
-    <div class="eyebrow">VICTORIA &middot; SALES INTELLIGENCE</div>
-    <h1>Sales overview</h1>
-    <p>
-      Review sample revenue, orders, units sold
-      and market performance.
-    </p>
-
-    <label for="monthSelect">Reporting month &nbsp;</label>
-
-    <select id="monthSelect" class="month-control">
-      <option value="2026-09">September 2026</option>
-      <option value="2026-08">August 2026</option>
-      <option value="2026-07">July 2026</option>
-    </select>
-  </div>
-
-  <div class="kpis">
-
-    <div class="card">
-      <div class="kpi-label">Revenue</div>
-      <div id="kpiRevenue" class="kpi-value">...</div>
-      <div class="kpi-sub">Sample sales data</div>
-    </div>
-
-    <div class="card">
-      <div class="kpi-label">Orders</div>
-      <div id="kpiOrders" class="kpi-value">...</div>
-      <div class="kpi-sub">Order count</div>
-    </div>
-
-    <div class="card">
-      <div class="kpi-label">Units sold</div>
-      <div id="kpiUnits" class="kpi-value">...</div>
-      <div class="kpi-sub">Units</div>
-    </div>
-
-    <div class="card">
-      <div class="kpi-label">Average order value</div>
-      <div id="kpiAov" class="kpi-value">...</div>
-      <div id="growthText" class="kpi-sub">Monthly KPI</div>
-    </div>
-
-  </div>
-
-  <div class="panels">
-
-    <div class="card">
-      <div class="panel-title">Revenue by market</div>
-      <div class="panel-sub">Sample database</div>
-      <div id="marketBars"></div>
-    </div>
-
-    <div class="card">
-      <div class="panel-title">Top products</div>
-      <div class="panel-sub">Sample product performance</div>
-      <div id="productList"></div>
-    </div>
-
-  </div>
-
-  <div id="overviewStatus" class="status" role="status"></div>
-
-</section>
-
-
-<section id="chatPage" class="hidden">
-
-  <div class="hero chat-hero">
-
-    <div class="eyebrow">&#10022; REAL SQL REPORTING</div>
-
-    <h1>Ask Victoria</h1>
-
-    <p>
-      Ask about transaction counts, reporting periods
-      and categories from Victoria's SQL Server.
-    </p>
-
-    <div class="suggestions">
-
-      <button class="suggestion" type="button"
-        onclick="askSuggestion('How many transactions were recorded in the R/A/N category in September 2026?')">
-        September transactions
-      </button>
-
-      <button class="suggestion" type="button"
-        onclick="askSuggestion('Compare transaction categories between September 2025 and September 2026')">
-        Compare years
-      </button>
-
-      <button class="suggestion" type="button"
-        onclick="askSuggestion('What is the net transaction value of the R/A/N category in September 2026?')">
-        Transaction value
-      </button>
-
-      <button class="suggestion" type="button"
-        onclick="askSuggestion('What transaction categories are recorded in September 2026?')">
-        Transaction categories
-      </button>
-
-    </div>
-
-    <form id="chatForm" class="chat-input">
-
-      <input
-        id="questionInput"
-        type="text"
-        maxlength="2000"
-        autocomplete="off"
-        placeholder="Ask Victoria a question..."
-        aria-label="Sales question"
-        required
-      >
-
-      <button type="submit" id="sendButton" class="send-btn">
-        Send &#8593;
-      </button>
-
-    </form>
-
-    <div
-      id="responseBox"
-      class="reply"
-      role="status"
-      aria-live="polite">
-      Ask a question to get started.
-    </div>
-
-  </div>
-
-  <p class="notice">
-    Powered by FastAPI, Ollama Qwen3 and SQL Server.
-    Real-data answers currently cover preliminary
-    September transaction summaries.
-    Transaction-code meanings and revenue definitions
-    still require validation.
-  </p>
-
-</section>
-
-
-<footer class="footer">
-  <span>
-    <strong>VICTORIA</strong> &middot;
-    Sales intelligence, made simple.
-  </span>
-
-  <span>
-    Development MVP &middot;
-    Demo dashboard / Preliminary SQL chatbot
-  </span>
-</footer>
-
+ </main>
 </div>
-</main>
-</div>
-
-
 <script>
-"use strict";
-
-const $ = id => document.getElementById(id);
-
-
-// PAGE NAVIGATION
-
-function showPage(page) {
-  const chat = page === "chat";
-
-  $("overviewPage").classList.toggle("hidden", chat);
-  $("chatPage").classList.toggle("hidden", !chat);
-
-  $("navOverview").classList.toggle("active", !chat);
-  $("navChat").classList.toggle("active", chat);
-
-  $("breadcrumb").textContent =
-    "Workspace / " + (chat ? "Ask Victoria" : "Sales overview");
-
-  if (chat) $("questionInput").focus();
+'use strict';
+const el = id => document.getElementById(id);
+const fmt = n => Number(n ?? 0).toLocaleString('en-US', {maximumFractionDigits: 2});
+const humanMonth = value => { const m = /^(\d{4})-(\d{2})$/.exec(value || ''); return m ? new Date(Date.UTC(+m[1],+m[2]-1,1)).toLocaleString('en-US',{month:'long',year:'numeric',timeZone:'UTC'}) : value; };
+function show(page) {
+ for (const p of ['overview','chat']) { el(p).classList.toggle('hidden',p !== page); el(p==='chat'?'navChat':'navOverview').classList.toggle('active',p===page); }
+ el('crumb').textContent='Workspace / '+(page==='chat'?'Ask Victoria':'Sales overview');
+ if (page==='chat') el('question').focus();
 }
-
-
-// DASHBOARD FORMATTING
-
-function money(value, currency = "USD") {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: currency,
-    maximumFractionDigits: 2
-  }).format(Number(value) || 0);
+function line(container,left,right) {
+ const row=document.createElement('div'); row.className='listline';
+ const a=document.createElement('span'); a.textContent=String(left||'Unspecified');
+ const b=document.createElement('strong'); b.textContent=String(right);
+ row.append(a,b);container.append(row);
 }
-
-
-// DISPLAY DASHBOARD
-
-function displayOverview(data) {
-  const s = data.summary || {};
-  const currency = data.currency || "USD";
-
-  $("kpiRevenue").textContent = money(s.revenue, currency);
-
-  $("kpiOrders").textContent =
-    (s.orders ?? "\u2014").toLocaleString();
-
-  $("kpiUnits").textContent =
-    (s.units_sold ?? "\u2014").toLocaleString();
-
-  $("kpiAov").textContent =
-    money(s.average_order_value, currency);
-
-  $("growthText").textContent =
-    s.revenue_growth_percent == null
-      ? "Monthly KPI"
-      : "Revenue growth: " + s.revenue_growth_percent + "%";
-
-  const markets = data.markets || [];
-  const max = Math.max(
-    1,
-    ...markets.map(m => Number(m.revenue) || 0)
-  );
-
-  $("marketBars").replaceChildren();
-
-  for (const market of markets) {
-    const row = document.createElement("div");
-    row.className = "barrow";
-
-    const name = document.createElement("span");
-    name.textContent = market.market;
-
-    const track = document.createElement("div");
-    track.className = "track";
-
-    const fill = document.createElement("div");
-    fill.className = "fill";
-
-    fill.style.width =
-      (100 * Number(market.revenue || 0) / max) + "%";
-
-    track.appendChild(fill);
-
-    const value = document.createElement("strong");
-    value.textContent = money(market.revenue, currency);
-
-    row.append(name, track, value);
-    $("marketBars").appendChild(row);
-  }
-
-  if (!markets.length) {
-    $("marketBars").textContent = "No market data available.";
-  }
-
-  const products = [...(data.products || [])]
-    .sort((a, b) => Number(b.revenue) - Number(a.revenue));
-
-  $("productList").replaceChildren();
-
-  for (const product of products) {
-    const row = document.createElement("div");
-    row.className = "listrow";
-
-    const name = document.createElement("span");
-    name.textContent = product.product;
-
-    const value = document.createElement("strong");
-    value.textContent = money(product.revenue, currency);
-
-    row.append(name, value);
-    $("productList").appendChild(row);
-  }
-
-  if (!products.length) {
-    $("productList").textContent = "No product data available.";
-  }
+async function errorMessage(response) {
+ let description='';
+ try { const payload=await response.json(); if(typeof payload.detail==='string') description=payload.detail; else if(typeof payload.message==='string') description=payload.message; } catch (_) {}
+ if(response.status===503) return 'HTTP 503: SQL reporting service unavailable. Check the FastAPI terminal, SQL Server and VICTORIA_SQL_PASSWORD.';
+ if(response.status===401 || response.status===403) return 'HTTP '+response.status+': Access denied.';
+ return 'HTTP '+response.status+(description ? ': '+description : '');
 }
-
-
-// LOAD DASHBOARD
-
 async function loadOverview() {
-  const month = $("monthSelect").value;
-
-  $("overviewStatus").textContent = "Loading sample sales data...";
-
-  try {
-    const response = await fetch(
-      "/api/sales/overview?month=" + encodeURIComponent(month),
-      { signal: AbortSignal.timeout(15000) }
-    );
-
-    if (!response.ok) throw new Error("HTTP " + response.status);
-
-    const data = await response.json();
-
-    if (!data.has_data) {
-      $("overviewStatus").textContent =
-        "No sample sales data for " + month;
-
-      $("marketBars").textContent = "No data available.";
-      $("productList").textContent = "No data available.";
-
-      ["kpiRevenue", "kpiOrders", "kpiUnits", "kpiAov"]
-        .forEach(id => $(id).textContent = "\u2014");
-
-      return;
-    }
-
-    displayOverview(data);
-
-    $("overviewStatus").textContent =
-      "Showing sample sales data for " + month;
-
-  } catch (err) {
-    $("overviewStatus").textContent =
-      "Unable to load dashboard: " + err.message;
+ const selected=el('month').value;
+ el('dashStatus').textContent='Loading real SQL aggregates…';
+ try {
+  const url='/api/sales/real-overview'+(selected?'?month='+encodeURIComponent(selected):'');
+  const response=await fetch(url,{signal:AbortSignal.timeout(30000),cache:'no-store'});
+  if(!response.ok) throw new Error(await errorMessage(response));
+  const data=await response.json();
+  const periods=Array.isArray(data.months)?data.months:[];
+  const active=data.period||selected;
+  if(periods.length){const select=el('month');select.replaceChildren();for(const period of periods){const option=document.createElement('option');option.value=period;option.textContent=humanMonth(period);select.append(option)}select.value=active;}
+  if(!data.has_data){ el('total').textContent='—';el('device').textContent='—';el('period').textContent=humanMonth(active)||'—';el('devices').textContent='No records';el('regions').textContent='No records';el('dashStatus').textContent='No data for this reporting period.';return; }
+  el('total').textContent=fmt(data.transaction_headers);el('period').textContent=humanMonth(data.period);
+  const devices=Array.isArray(data.devices)?data.devices:[];
+  const regions=Array.isArray(data.regions)?data.regions:[];
+  el('device').textContent=devices.length?devices[0].PartName:'No device candidates';
+  el('deviceCount').textContent=devices.length?'Recorded quantity: '+fmt(devices[0].RecordedQuantity):'No matching details';
+  el('devices').replaceChildren();el('regions').replaceChildren();
+  if(!devices.length)el('devices').textContent='No device data available.';
+  if(!regions.length)el('regions').textContent='No region data available.';
+  for(const d of devices)line(el('devices'),d.PartName,fmt(d.RecordedQuantity));
+  for(const r of regions)line(el('regions'),r.Region||'Blank region',fmt(r.TransactionHeaders));
+  el('dashStatus').textContent=data.disclaimer||'Preliminary reporting aggregates; not verified sales.';
+ } catch(err){el('dashStatus').textContent='Could not load dashboard: '+(err.name==='TimeoutError'?'Request timed out':err.message);el('dashStatus').classList.add('error');}
+}
+function inlineText(node,value){
+ const parts=String(value).split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
+ for(const part of parts){
+  if(part.startsWith('**')&&part.endsWith('**')&&part.length>4){const b=document.createElement('strong');b.textContent=part.slice(2,-2);node.append(b);}
+  else if(part.startsWith('`')&&part.endsWith('`')&&part.length>2){const c=document.createElement('code');c.textContent=part.slice(1,-1);node.append(c);}
+  else node.append(document.createTextNode(part));
+ }
+}
+function renderAnswer(value){
+ const root=el('reply');root.replaceChildren();let table=null,list=null,code=false,codeLines=[];
+ function flushCode(){if(!codeLines.length)return;const pre=document.createElement('pre');pre.textContent=codeLines.join('\n');root.append(pre);codeLines=[];}
+ for(const raw of String(value||'').split(/\r?\n/)){
+  const text=raw.trim();
+  if(text.startsWith('```')){if(code)flushCode();code=!code;table=null;list=null;continue;}
+  if(code){codeLines.push(raw);continue;}
+  if(!text){table=null;list=null;continue;}
+  const heading=text.match(/^(#{1,4})\s+(.+)$/);
+  if(heading){const h=document.createElement('h'+Math.min(4,heading[1].length+1));inlineText(h,heading[2]);root.append(h);table=null;list=null;continue;}
+  if(/^(-{3,}|\*{3,})$/.test(text)){root.append(document.createElement('hr'));table=null;list=null;continue;}
+  if(text.startsWith('|')&&text.endsWith('|')){
+   const cells=text.slice(1,-1).split('|').map(v=>v.trim());
+   if(cells.every(v=>/^:?-{3,}:?$/.test(v)))continue;
+   if(!table){table=document.createElement('table');root.append(table);}
+   const tr=document.createElement('tr');const tag=table.rows.length?'td':'th';
+   for(const value of cells){const td=document.createElement(tag);inlineText(td,value);tr.append(td);}table.append(tr);list=null;continue;
   }
+  table=null;
+  const bullet=text.match(/^[-*]\s+(.+)$/),numbered=text.match(/^\d+[.)]\s+(.+)$/);
+  if(bullet||numbered){const tag=numbered?'ol':'ul';if(!list||list.tagName.toLowerCase()!==tag){list=document.createElement(tag);root.append(list);}const li=document.createElement('li');inlineText(li,(bullet||numbered)[1]);list.append(li);continue;}
+  list=null;
+  if(text.startsWith('> ')){const q=document.createElement('blockquote');inlineText(q,text.slice(2));root.append(q);continue;}
+  const p=document.createElement('p');inlineText(p,text);root.append(p);
+ }
+ if(code)flushCode();if(!root.childNodes.length)root.textContent='No answer was returned.';
 }
 
+function showDirectDeviceAnswer(question, answer) {
+  const q = String(question).toLowerCase();
 
-// SAFE INLINE FORMATTING
+  if (!/\b(top|highest|most)\b/.test(q)) return;
+  if (!/\b(model|device|phone)\b/.test(q)) return;
 
-function appendFormattedText(element, text) {
-  const parts = String(text).split(
-    /(\*\*[^*]+\*\*|`[^`]+`)/g
+  const rows = String(answer)
+    .split(/\r?\n/)
+    .filter(line => line.trim().startsWith('|'))
+    .map(line => line.trim().replace(/^\||\|$/g, '')
+      .split('|').map(cell => cell.trim()));
+
+  if (rows.length < 3) return;
+
+  const headers = rows[0].map(x => x.toLowerCase());
+  const deviceCol = headers.findIndex(
+    x => x.includes('device') || x.includes('model')
   );
+  const qtyCol = headers.findIndex(x => x.includes('quantity'));
 
-  for (const part of parts) {
-    if (part.startsWith("**") && part.endsWith("**")
-        && part.length > 4) {
+  if (deviceCol < 0 || qtyCol < 0) return;
 
-      const strong = document.createElement("strong");
-      strong.textContent = part.slice(2, -2);
-      element.appendChild(strong);
+  const candidates = rows.slice(1)
+    .map(row => ({
+      name: (row[deviceCol] || '').replace(/\*\*/g, ''),
+      quantity: Number(
+        (row[qtyCol] || '').replace(/[,*]/g, '')
+      )
+    }))
+    .filter(x => x.name && Number.isFinite(x.quantity))
+    .sort((a, b) => b.quantity - a.quantity);
 
-    } else if (
-      part.startsWith("`") &&
-      part.endsWith("`") &&
-      part.length > 2
-    ) {
+  if (!candidates.length) return;
 
-      const code = document.createElement("code");
-      code.textContent = part.slice(1, -1);
-      element.appendChild(code);
+  const winner = candidates[0];
 
-    } else {
-      element.appendChild(
-        document.createTextNode(part)
-      );
-    }
-  }
+  const summary = document.createElement('div');
+  summary.className = 'direct-answer';
+  summary.style.cssText =
+    'padding:18px;margin-bottom:20px;' +
+    'background:#fff1f2;border:1px solid #f2cdd1;' +
+    'border-radius:12px';
+
+  const heading = document.createElement('h3');
+  heading.textContent = 'Top recorded device';
+
+  const name = document.createElement('p');
+  const strong = document.createElement('strong');
+  strong.textContent = winner.name;
+  name.append(strong);
+
+  const quantity = document.createElement('p');
+  quantity.textContent =
+    'Recorded quantity: ' +
+    winner.quantity.toLocaleString('en-US');
+
+  const note = document.createElement('small');
+  note.textContent =
+    'Preliminary quantity across transaction statuses, not confirmed sales.';
+
+  summary.append(heading, name, quantity, note);
+  el('reply').prepend(summary);
 }
 
-
-// FORMAT AI RESPONSE
-
-function renderVictoriaAnswer(answer) {
-  const box = $("responseBox");
-  box.replaceChildren();
-
-  const lines = String(answer).split(/\r?\n/);
-
-  let list = null;
-  let table = null;
-  let codeBlock = false;
-  let codeLines = [];
-
-  function addCode() {
-    const pre = document.createElement("pre");
-    const code = document.createElement("code");
-
-    code.textContent = codeLines.join("\n");
-    pre.appendChild(code);
-    box.appendChild(pre);
-
-    codeLines = [];
-  }
-
-  for (const raw of lines) {
-    const line = raw.trim();
-
-    if (line.startsWith("```")) {
-      if (codeBlock) addCode();
-
-      codeBlock = !codeBlock;
-      table = null;
-      list = null;
-      continue;
-    }
-
-    if (codeBlock) {
-      codeLines.push(raw);
-      continue;
-    }
-
-    if (!line) {
-      list = null;
-      table = null;
-      continue;
-    }
-
-    const heading = line.match(/^(#{1,4})\s+(.+)$/);
-
-    if (heading) {
-      list = null;
-      table = null;
-
-      const level = Math.min(heading[1].length + 1, 4);
-      const h = document.createElement("h" + level);
-
-      appendFormattedText(h, heading[2]);
-      box.appendChild(h);
-      continue;
-    }
-
-    if (/^(-{3,}|\*{3,})$/.test(line)) {
-      list = null;
-      table = null;
-      box.appendChild(document.createElement("hr"));
-      continue;
-    }
-
-    // Markdown tables
-
-    if (line.startsWith("|") && line.endsWith("|")) {
-      const cells = line.slice(1, -1)
-        .split("|")
-        .map(value => value.trim());
-
-      const isSeparator =
-        cells.length > 0 &&
-        cells.every(c => /^:?-{3,}:?$/.test(c));
-
-      if (isSeparator) continue;
-
-      list = null;
-
-      if (!table) {
-        table = document.createElement("table");
-        box.appendChild(table);
-      }
-
-      const tr = document.createElement("tr");
-      const isHeader = table.rows.length === 0;
-
-      for (const cell of cells) {
-        const td = document.createElement(isHeader ? "th" : "td");
-        appendFormattedText(td, cell);
-        tr.appendChild(td);
-      }
-
-      table.appendChild(tr);
-      continue;
-    }
-
-    table = null;
-
-    // Bulleted and numbered lists
-
-    const bullet = line.match(/^[-*]\s+(.+)$/);
-    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
-
-    if (bullet || numbered) {
-      const tag = numbered ? "ol" : "ul";
-
-      if (!list || list.tagName.toLowerCase() !== tag) {
-        list = document.createElement(tag);
-        box.appendChild(list);
-      }
-
-      const li = document.createElement("li");
-      appendFormattedText(li, numbered ? numbered[1] : bullet[1]);
-
-      list.appendChild(li);
-      continue;
-    }
-
-    list = null;
-
-    if (line.startsWith("> ")) {
-      const quote = document.createElement("blockquote");
-      appendFormattedText(quote, line.slice(2));
-      box.appendChild(quote);
-      continue;
-    }
-
-    const p = document.createElement("p");
-    appendFormattedText(p, line);
-    box.appendChild(p);
-  }
-
-  if (codeBlock && codeLines.length) addCode();
-
-  if (!box.childNodes.length) {
-    box.textContent = "No response was returned.";
-  }
+async function sendQuestion(event){
+ event.preventDefault();const question=el('question').value.trim();if(!question||el('send').disabled)return;
+ el('send').disabled=true;el('reply').textContent='Checking Victoria reporting views…';
+ try{
+  const response=await fetch('/api/chat/real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),signal:AbortSignal.timeout(120000)});
+  if(!response.ok)throw new Error(await errorMessage(response));
+  const data=await response.json();
+  renderAnswer(data.answer||'No answer returned.');
+  showDirectDeviceAnswer(question, data.answer||'');
+ }catch(err){el('reply').textContent='Unable to answer: '+(err.name==='TimeoutError'?'Request timed out.':err.message);}
+ finally{el('send').disabled=false;}
 }
-
-
-// CHAT SUGGESTIONS
-
-function askSuggestion(question) {
-  showPage("chat");
-  $("questionInput").value = question;
-  $("chatForm").requestSubmit();
-}
-
-
-// SEND QUESTION TO REAL SQL AGENT
-
-async function sendQuestion(event) {
-  event.preventDefault();
-
-  const question = $("questionInput").value.trim();
-
-  if (!question || $("sendButton").disabled) return;
-
-  $("sendButton").disabled = true;
-  $("responseBox").setAttribute("aria-busy", "true");
-  $("responseBox").textContent =
-    "Victoria is analyzing your question...";
-
-  try {
-    const response = await fetch("/api/chat/real", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ question }),
-      signal: AbortSignal.timeout(125000)
-    });
-
-    if (!response.ok) {
-      throw new Error("Server returned " + response.status);
-    }
-
-    const data = await response.json();
-
-    renderVictoriaAnswer(
-      data.answer || "No response was returned."
-    );
-
-  } catch (err) {
-    $("responseBox").textContent =
-      "Unable to answer your question: " + err.message;
-
-  } finally {
-    $("sendButton").disabled = false;
-    $("responseBox").removeAttribute("aria-busy");
-  }
-}
-
-
-// EVENTS
-
-$("chatForm").addEventListener("submit", sendQuestion);
-$("monthSelect").addEventListener("change", loadOverview);
-
-
-// START APP
-
+el('navOverview').addEventListener('click',()=>show('overview'));
+el('navChat').addEventListener('click',()=>show('chat'));
+el('month').addEventListener('change',loadOverview);
+el('form').addEventListener('submit',sendQuestion);
+for(const button of document.querySelectorAll('[data-question]'))button.addEventListener('click',()=>{show('chat');el('question').value=button.dataset.question;el('form').requestSubmit();});
 loadOverview();
 </script>
-
 </body>
 </html>
