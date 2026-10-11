@@ -23,3 +23,38 @@ __pycache__/
 *.bak
 *.log
 .pytest_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Databases and backups
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+*.bacpac
+*.mdf
+*.ldf
+*.rar
+
+# Temporary development files
+*.backup.py
+*.backup.html
+*.before-*.py
+*.before-*.html
+*.encoding-backup.html
+fix_ui.py
+
+# Local configuration
+.vscode/

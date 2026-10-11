@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -22,8 +22,8 @@
       <div class="brand"><div class="brand-logo" aria-label="Victoria logo" style="display:grid;place-items:center;background:#fff;color:#c3101a;font-size:32px;font-weight:900">V</div><div><strong>VICTORIA</strong><small>Sales Intelligence</small></div></div>
       <div class="nav-label">WORKSPACE</div>
       <nav class="nav" aria-label="Workspace navigation">
-        <button id="navOverview" class="active" type="button" onclick="showPage('overview')">▦ &nbsp; Sales overview</button>
-        <button id="navChat" type="button" onclick="showPage('chat')">✦ &nbsp; Ask Victoria</button>
+        <button id="navOverview" class="active" type="button" onclick="showPage('overview')">&#9633; &nbsp; Sales overview</button>
+        <button id="navChat" type="button" onclick="showPage('chat')">&#10022; &nbsp; Ask Victoria</button>
       </nav>
       <div class="user"><div class="avatar">JK</div><div><strong>Victoria workspace</strong><small>Sales intelligence</small></div></div>
     </aside>
@@ -31,20 +31,20 @@
       <header class="topbar"><div id="breadcrumb">Workspace / Sales overview</div><span class="chip">Sample-data workspace</span></header>
       <div class="content">
         <section id="overviewPage">
-          <div class="hero"><div class="eyebrow">VICTORIA · SALES INTELLIGENCE</div><h1>Sales overview</h1><p>Review revenue, orders, units sold and market performance.</p><label for="monthSelect">Reporting month &nbsp;</label><select id="monthSelect" class="month-control"><option value="2026-09">September 2026</option><option value="2026-08">August 2026</option><option value="2026-07">July 2026</option></select></div>
-          <div class="kpis"><div class="card"><div class="kpi-label">Revenue</div><div id="kpiRevenue" class="kpi-value">…</div><div class="kpi-sub">Total sales</div></div><div class="card"><div class="kpi-label">Orders</div><div id="kpiOrders" class="kpi-value">…</div><div class="kpi-sub">Order count</div></div><div class="card"><div class="kpi-label">Units sold</div><div id="kpiUnits" class="kpi-value">…</div><div class="kpi-sub">Units</div></div><div class="card"><div class="kpi-label">Average order value</div><div id="kpiAov" class="kpi-value">…</div><div id="growthText" class="kpi-sub">Monthly KPI</div></div></div>
+          <div class="hero"><div class="eyebrow">VICTORIA &middot; SALES INTELLIGENCE</div><h1>Sales overview</h1><p>Review revenue, orders, units sold and market performance.</p><label for="monthSelect">Reporting month &nbsp;</label><select id="monthSelect" class="month-control"><option value="2026-09">September 2026</option><option value="2026-08">August 2026</option><option value="2026-07">July 2026</option></select></div>
+          <div class="kpis"><div class="card"><div class="kpi-label">Revenue</div><div id="kpiRevenue" class="kpi-value">&#8230;</div><div class="kpi-sub">Total sales</div></div><div class="card"><div class="kpi-label">Orders</div><div id="kpiOrders" class="kpi-value">&#8230;</div><div class="kpi-sub">Order count</div></div><div class="card"><div class="kpi-label">Units sold</div><div id="kpiUnits" class="kpi-value">&#8230;</div><div class="kpi-sub">Units</div></div><div class="card"><div class="kpi-label">Average order value</div><div id="kpiAov" class="kpi-value">&#8230;</div><div id="growthText" class="kpi-sub">Monthly KPI</div></div></div>
           <div class="panels"><div class="card"><div class="panel-title">Revenue by market</div><div class="panel-sub">Sample database, selected month</div><div id="marketBars"></div></div><div class="card"><div class="panel-title">Top products</div><div class="panel-sub">Ranked by revenue</div><div id="productList"></div></div></div>
           <div id="overviewStatus" class="status" role="status"></div>
         </section>
         <section id="chatPage" class="hidden">
-          <div class="hero chat-hero"><div class="eyebrow">✦ YOUR SALES COPILOT</div><h1>✦ Ask Victoria</h1><p>Ask questions about sales, revenue, products and markets.</p>
+          <div class="hero chat-hero"><div class="eyebrow">&#10022; YOUR SALES COPILOT</div><h1>&#10022; Ask Victoria</h1><p>Ask questions about sales, revenue, products and markets.</p>
             <div class="suggestions"><button class="suggestion" onclick="askSuggestion('Give me a sales summary for September 2026')">Give me a sales summary</button><button class="suggestion" onclick="askSuggestion('Which market performed best in September 2026?')">Which market is performing best?</button><button class="suggestion" onclick="askSuggestion('Show top-selling products in September 2026')">Show top-selling products</button><button class="suggestion" onclick="askSuggestion('How is revenue trending in September 2026?')">How is revenue trending?</button></div>
-            <form id="chatForm" class="chat-input"><input id="questionInput" type="text" autocomplete="off" maxlength="2000" aria-label="Sales question" placeholder="Ask a sales question..." required><button type="submit" id="sendButton" class="send-btn">Send ↑</button></form>
+            <form id="chatForm" class="chat-input"><input id="questionInput" type="text" autocomplete="off" maxlength="2000" aria-label="Sales question" placeholder="Ask a sales question..." required><button type="submit" id="sendButton" class="send-btn">Send &uarr;</button></form>
             <div id="responseBox" class="reply" role="status" aria-live="polite">Ask a sales question to get started.</div>
           </div>
           <p class="notice">Powered by locally hosted Qwen3 8B and FastAPI. Answers currently use the sample sales database, not Victoria's production data. Confirm AI-generated figures against the dashboard.</p>
         </section>
-        <footer class="footer"><span><strong>VICTORIA</strong> · Sales intelligence, made simple.</span><span>Development MVP · Sample data</span></footer>
+        <footer class="footer"><span><strong>VICTORIA</strong> &middot; Sales intelligence, made simple.</span><span>Development MVP &middot; Sample data</span></footer>
       </div>
     </main>
   </div>
@@ -64,8 +64,8 @@
     function displayOverview(data){
       const s=data.summary||{};const currency=data.currency||'USD';
       $('kpiRevenue').textContent=money(s.revenue,currency);
-      $('kpiOrders').textContent=(s.orders??'—').toLocaleString();
-      $('kpiUnits').textContent=(s.units_sold??'—').toLocaleString();
+      $('kpiOrders').textContent=(s.orders??'\u2014').toLocaleString();
+      $('kpiUnits').textContent=(s.units_sold??'\u2014').toLocaleString();
       $('kpiAov').textContent=money(s.average_order_value,currency);
       $('growthText').textContent=s.revenue_growth_percent==null?'Monthly KPI':`Revenue growth: ${s.revenue_growth_percent}%`;
       const markets=Array.isArray(data.markets)?data.markets:[];
@@ -84,20 +84,20 @@
       if(!products.length) $('productList').textContent='No product data available for this month.';
     }
     async function loadOverview(){
-      const month=$('monthSelect').value;$('overviewStatus').textContent='Loading sales data…';
+      const month=$('monthSelect').value;$('overviewStatus').textContent='Loading sales data\u2026';
       try{
         const response=await fetch(`/api/sales/overview?month=${encodeURIComponent(month)}`,{signal:AbortSignal.timeout(15000)});
         if(!response.ok) throw Error(`Server returned ${response.status}`);
         const data=await response.json();
-        if(!data.has_data){$('overviewStatus').textContent=`No sales data for ${month}.`;$('marketBars').textContent='No data available.';$('productList').textContent='No data available.';['kpiRevenue','kpiOrders','kpiUnits','kpiAov'].forEach(id=>$(id).textContent='—');return;}
+        if(!data.has_data){$('overviewStatus').textContent=`No sales data for ${month}.`;$('marketBars').textContent='No data available.';$('productList').textContent='No data available.';['kpiRevenue','kpiOrders','kpiUnits','kpiAov'].forEach(id=>$(id).textContent='\u2014');return;}
         displayOverview(data);$('overviewStatus').textContent=`Showing ${data.mode==='sample_database'?'sample':'available'} sales data for ${month}.`;
       }catch(e){$('overviewStatus').textContent=`Could not load sales data: ${e.message}`;}
     }
     function askSuggestion(question){showPage('chat');$('questionInput').value=question;$('chatForm').requestSubmit();}
     async function sendQuestion(event){event.preventDefault();const question=$('questionInput').value.trim();if(!question||$('sendButton').disabled)return;
-      $('sendButton').disabled=true;$('responseBox').setAttribute('aria-busy','true');$('responseBox').textContent='Victoria is analyzing your question…';
+      $('sendButton').disabled=true;$('responseBox').setAttribute('aria-busy','true');$('responseBox').textContent='Victoria is analyzing your question\u2026';
       try{
-        const response=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),signal:AbortSignal.timeout(125000)});
+        const response=await fetch('/api/chat/real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),signal:AbortSignal.timeout(125000)});
         const data=await response.json();
         if(!response.ok)throw Error(typeof data.detail==='string'?data.detail:`Server returned ${response.status}`);
         $('responseBox').textContent='Victoria: '+(data.answer||'No response was returned.');
@@ -110,3 +110,4 @@
   </script>
 </body>
 </html>
+
