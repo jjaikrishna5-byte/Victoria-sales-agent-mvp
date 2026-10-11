@@ -115,3 +115,43 @@ __pycache__/
 *.before-*.py
 *.before-*.html
 backup-*/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*secrets*.json
+
+# Databases and private data
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.bacpac
+*.mdf
+*.ldf
+*.csv
+*.xlsx
+*.xls
+*.parquet
+
+# Backups and temporary files
+backup-*/
+*.backup.*
+*.before-*
+*.encoding-backup.*
+fix_ui.py
+
+# Development settings
+.vscode/
+.idea/
