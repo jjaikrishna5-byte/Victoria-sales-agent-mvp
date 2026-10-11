@@ -1,113 +1,1109 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Victoria | Sales Intelligence</title>
-  <style>
-    :root{--red:#d71920;--dark:#a80d15;--ink:#291719;--muted:#856f72;--bg:#fff8f8;--line:#f0cdd0;--white:#fff}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}
-    .app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}.sidebar{background:linear-gradient(155deg,var(--red),var(--dark));color:white;padding:25px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-    .brand{display:flex;gap:13px;align-items:center;padding:5px 5px 28px;border-bottom:1px solid #ffffff30}.brand-logo{width:58px;height:58px;border-radius:14px;object-fit:contain;background:#d71920}.brand strong{display:block;font-size:19px;letter-spacing:.075em}.brand small{display:block;font-size:13px;margin-top:6px;opacity:.85}
-    .nav-label{margin:33px 8px 15px;font-size:12px;letter-spacing:.12em;color:#ffced2;font-weight:800}.nav{display:grid;gap:10px}.nav button{color:#fff;background:none;border:0;text-align:left;padding:16px;border-radius:12px;font-size:16px;font-weight:700}.nav button.active,.nav button:hover{background:#ffffff30}.user{margin-top:auto;display:flex;align-items:center;gap:12px;border-top:1px solid #ffffff33;padding:22px 4px 4px}.avatar{display:grid;place-items:center;background:white;color:var(--red);border-radius:50%;width:43px;height:43px;font-weight:900}.user small{display:block;opacity:.7;margin-top:4px}
-    .main{min-width:0}.topbar{height:80px;background:#fffcfc;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 38px;color:var(--muted)}.chip{border:1px solid var(--line);background:#fff0f1;color:var(--red);border-radius:25px;padding:10px 15px;font-size:13px;font-weight:750}.content{padding:32px 38px;max-width:1500px;margin:auto}.hero{background:linear-gradient(120deg,#d71920,#aa0710);color:white;border-radius:23px;padding:37px 40px;margin-bottom:27px;position:relative;overflow:hidden}.hero:after{content:'V';font-size:280px;font-weight:900;position:absolute;right:-25px;bottom:-90px;color:#ffffff09;pointer-events:none}.hero h1{font-size:clamp(30px,3.6vw,43px);margin:8px 0 14px}.hero p{color:#ffe4e5;margin:0 0 25px;line-height:1.6}.eyebrow{letter-spacing:.16em;font-size:11px;font-weight:850;color:#ffd8db}
-    .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:25px}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 10px 32px #9a273008}.kpi-label{font-size:13px;color:var(--muted);font-weight:700}.kpi-value{font-size:29px;font-weight:900;margin-top:18px}.kpi-sub{color:var(--red);font-size:12px;font-weight:700;margin-top:8px}.panels{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}.panel-title{font-size:18px;font-weight:800;margin-bottom:8px}.panel-sub{font-size:12px;color:var(--muted)}.barrow{display:grid;grid-template-columns:110px 1fr 76px;gap:12px;align-items:center;margin-top:19px;font-size:13px}.track{background:#ffebed;border-radius:100px;height:13px;overflow:hidden}.fill{background:linear-gradient(90deg,#fa5d65,var(--red));height:100%;border-radius:100px}.listrow{display:flex;justify-content:space-between;gap:12px;margin-top:15px;padding-bottom:14px;border-bottom:1px solid #f6e6e7;font-size:13px}.listrow:last-child{border:0}.listrow strong{color:var(--red)}.month-control{border:1px solid #ffffff70;border-radius:9px;background:#ffffff20;color:white;padding:10px}.month-control option{color:#291719}
-    .suggestions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}.suggestion{background:#ffffff18;border:1px solid #ffffff6b;color:#fff;border-radius:30px;padding:12px 17px;font-weight:650}.suggestion:hover{background:#ffffff35}.chat-input{display:flex;gap:10px;background:white;border:3px solid #ffb9bf;border-radius:20px;padding:10px;margin-bottom:16px;position:relative;z-index:1}.chat-input input{border:0;outline:0;width:100%;padding:13px;font-size:17px;min-width:0}.send-btn{background:var(--red);color:white;border:none;padding:14px 24px;border-radius:13px;font-weight:800}.reply{background:#ffffff21;border:1px solid #ffffff35;border-radius:15px;padding:21px;min-height:70px;white-space:pre-wrap;line-height:1.65;position:relative;z-index:1}.chat-hero{min-height:460px}.notice{font-size:13px;color:var(--muted);line-height:1.6;margin:14px 0 25px}.footer{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;padding-top:14px}.footer strong{color:var(--red)}.hidden{display:none!important}.status{font-size:12px;color:var(--muted);margin:10px 0}.error{color:#fff3d2}.loading{opacity:.75}
-    @media(max-width:1000px){.app{grid-template-columns:210px 1fr}.content{padding:22px}.kpis{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}}@media(max-width:650px){.app{display:block}.sidebar{height:auto;position:static;padding:14px}.brand{padding-bottom:12px}.nav-label,.user{display:none}.nav{display:flex;margin-top:12px}.nav button{font-size:13px;padding:10px}.topbar{height:60px;padding:0 15px}.content{padding:15px}.hero{padding:25px}.kpis{gap:9px}.card{padding:15px}.kpi-value{font-size:22px}.chat-input input{font-size:14px}.send-btn{padding:12px}.footer{gap:10px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Victoria | Sales Intelligence</title>
+
+<style>
+:root {
+  --red: #d71920;
+  --dark: #a80d15;
+  --ink: #291719;
+  --muted: #856f72;
+  --bg: #fff8f8;
+  --line: #f0cdd0;
+  --white: #fff;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+
+.app {
+  display: grid;
+  grid-template-columns: 270px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: linear-gradient(155deg, var(--red), var(--dark));
+  color: white;
+  padding: 25px 18px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+  padding: 5px 5px 28px;
+  border-bottom: 1px solid #ffffff30;
+}
+
+.brand-logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: white;
+  color: var(--red);
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.brand strong {
+  display: block;
+  font-size: 19px;
+  letter-spacing: .075em;
+}
+
+.brand small {
+  display: block;
+  font-size: 13px;
+  margin-top: 6px;
+  opacity: .85;
+}
+
+.nav-label {
+  margin: 33px 8px 15px;
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: #ffced2;
+  font-weight: 800;
+}
+
+.nav { display: grid; gap: 10px; }
+
+.nav button {
+  color: white;
+  background: none;
+  border: 0;
+  text-align: left;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.nav button.active,
+.nav button:hover {
+  background: #ffffff30;
+}
+
+.user {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #ffffff33;
+  padding: 22px 4px 4px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  background: white;
+  color: var(--red);
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  font-weight: 900;
+}
+
+.user small {
+  display: block;
+  opacity: .7;
+  margin-top: 4px;
+}
+
+.main { min-width: 0; }
+
+.topbar {
+  height: 80px;
+  background: #fffcfc;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 38px;
+  color: var(--muted);
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: #fff0f1;
+  color: var(--red);
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.content {
+  padding: 32px 38px;
+  max-width: 1500px;
+  margin: auto;
+}
+
+.hero {
+  background: linear-gradient(120deg, #d71920, #aa0710);
+  color: white;
+  border-radius: 23px;
+  padding: 37px 40px;
+  margin-bottom: 27px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "V";
+  font-size: 280px;
+  font-weight: 900;
+  position: absolute;
+  right: -25px;
+  bottom: -90px;
+  color: #ffffff09;
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-size: clamp(30px, 3.6vw, 43px);
+  margin: 8px 0 14px;
+}
+
+.hero p {
+  color: #ffe4e5;
+  margin: 0 0 25px;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  letter-spacing: .16em;
+  font-size: 11px;
+  font-weight: 850;
+  color: #ffd8db;
+}
+
+.month-control {
+  border: 1px solid #ffffff70;
+  border-radius: 9px;
+  background: #ffffff20;
+  color: white;
+  padding: 10px;
+}
+
+.month-control option { color: var(--ink); }
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 10px 32px #9a273008;
+}
+
+.kpi-label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.kpi-value {
+  font-size: 29px;
+  font-weight: 900;
+  margin-top: 18px;
+}
+
+.kpi-sub {
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 18px;
+}
+
+.panel-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.panel-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.barrow {
+  display: grid;
+  grid-template-columns: 110px minmax(0,1fr) 100px;
+  gap: 12px;
+  align-items: center;
+  margin-top: 19px;
+  font-size: 13px;
+}
+
+.track {
+  background: #ffebed;
+  border-radius: 100px;
+  height: 13px;
+  overflow: hidden;
+}
+
+.fill {
+  background: linear-gradient(90deg, #fa5d65, var(--red));
+  height: 100%;
+  border-radius: 100px;
+}
+
+.listrow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #f6e6e7;
+  font-size: 13px;
+}
+
+.listrow:last-child { border: 0; }
+.listrow strong { color: var(--red); }
+
+.suggestions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.suggestion {
+  background: #ffffff18;
+  border: 1px solid #ffffff6b;
+  color: white;
+  border-radius: 30px;
+  padding: 12px 17px;
+  font-weight: 650;
+}
+
+.suggestion:hover { background: #ffffff35; }
+
+.chat-input {
+  display: flex;
+  gap: 10px;
+  background: white;
+  border: 3px solid #ffb9bf;
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.chat-input input {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  padding: 13px;
+  font-size: 17px;
+  min-width: 0;
+}
+
+.send-btn {
+  background: var(--red);
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  border-radius: 13px;
+  font-weight: 800;
+}
+
+.chat-hero { min-height: 460px; }
+
+.reply {
+  background: white;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 80px;
+  line-height: 1.7;
+  white-space: normal;
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 8px 25px #3b101010;
+}
+
+.reply h2, .reply h3, .reply h4 {
+  color: var(--dark);
+  line-height: 1.35;
+  margin: 20px 0 10px;
+}
+
+.reply h2 { font-size: 23px; }
+.reply h3 { font-size: 19px; }
+.reply h4 { font-size: 16px; }
+
+.reply p { margin: 9px 0; }
+
+.reply strong {
+  font-weight: 800;
+  color: #8d1017;
+}
+
+.reply ul, .reply ol {
+  padding-left: 25px;
+  margin: 12px 0;
+}
+
+.reply li { margin: 6px 0; }
+
+.reply table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  background: white;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.reply th, .reply td {
+  padding: 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.reply th {
+  background: #fff0f1;
+  color: var(--dark);
+}
+
+.reply tr:nth-child(even) td {
+  background: #fffafa;
+}
+
+.reply code {
+  background: #fff0f1;
+  color: #8d1017;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-family: Consolas, monospace;
+}
+
+.reply pre {
+  white-space: pre-wrap;
+  background: #fff7f8;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.reply blockquote {
+  border-left: 4px solid var(--red);
+  margin: 14px 0;
+  padding: 8px 14px;
+  background: #fff7f8;
+}
+
+.reply hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 18px 0;
+}
+
+.notice {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 14px 0 25px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  padding-top: 14px;
+}
+
+.footer strong { color: var(--red); }
+.hidden { display: none !important; }
+
+.status {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 10px 0;
+}
+
+@media(max-width:1000px) {
+  .app { grid-template-columns: 210px 1fr; }
+  .kpis { grid-template-columns: repeat(2,1fr); }
+  .panels { grid-template-columns: 1fr; }
+  .content { padding: 22px; }
+}
+
+@media(max-width:650px) {
+  .app { display: block; }
+  .sidebar { height: auto; position: static; padding: 14px; }
+  .brand { padding-bottom: 12px; }
+  .nav-label, .user { display: none; }
+  .nav { display: flex; margin-top: 12px; }
+  .nav button { font-size: 13px; padding: 10px; }
+  .topbar { height: 60px; padding: 0 15px; }
+  .content { padding: 15px; }
+  .hero { padding: 25px; }
+  .kpis { gap: 9px; }
+  .card { padding: 15px; }
+  .kpi-value { font-size: 22px; }
+  .chat-input input { font-size: 14px; }
+  .send-btn { padding: 12px; }
+  .reply { padding: 16px; }
+}
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand"><div class="brand-logo" aria-label="Victoria logo" style="display:grid;place-items:center;background:#fff;color:#c3101a;font-size:32px;font-weight:900">V</div><div><strong>VICTORIA</strong><small>Sales Intelligence</small></div></div>
-      <div class="nav-label">WORKSPACE</div>
-      <nav class="nav" aria-label="Workspace navigation">
-        <button id="navOverview" class="active" type="button" onclick="showPage('overview')">&#9633; &nbsp; Sales overview</button>
-        <button id="navChat" type="button" onclick="showPage('chat')">&#10022; &nbsp; Ask Victoria</button>
-      </nav>
-      <div class="user"><div class="avatar">JK</div><div><strong>Victoria workspace</strong><small>Sales intelligence</small></div></div>
-    </aside>
-    <main class="main">
-      <header class="topbar"><div id="breadcrumb">Workspace / Sales overview</div><span class="chip">Sample-data workspace</span></header>
-      <div class="content">
-        <section id="overviewPage">
-          <div class="hero"><div class="eyebrow">VICTORIA &middot; SALES INTELLIGENCE</div><h1>Sales overview</h1><p>Review revenue, orders, units sold and market performance.</p><label for="monthSelect">Reporting month &nbsp;</label><select id="monthSelect" class="month-control"><option value="2026-09">September 2026</option><option value="2026-08">August 2026</option><option value="2026-07">July 2026</option></select></div>
-          <div class="kpis"><div class="card"><div class="kpi-label">Revenue</div><div id="kpiRevenue" class="kpi-value">&#8230;</div><div class="kpi-sub">Total sales</div></div><div class="card"><div class="kpi-label">Orders</div><div id="kpiOrders" class="kpi-value">&#8230;</div><div class="kpi-sub">Order count</div></div><div class="card"><div class="kpi-label">Units sold</div><div id="kpiUnits" class="kpi-value">&#8230;</div><div class="kpi-sub">Units</div></div><div class="card"><div class="kpi-label">Average order value</div><div id="kpiAov" class="kpi-value">&#8230;</div><div id="growthText" class="kpi-sub">Monthly KPI</div></div></div>
-          <div class="panels"><div class="card"><div class="panel-title">Revenue by market</div><div class="panel-sub">Sample database, selected month</div><div id="marketBars"></div></div><div class="card"><div class="panel-title">Top products</div><div class="panel-sub">Ranked by revenue</div><div id="productList"></div></div></div>
-          <div id="overviewStatus" class="status" role="status"></div>
-        </section>
-        <section id="chatPage" class="hidden">
-          <div class="hero chat-hero"><div class="eyebrow">&#10022; YOUR SALES COPILOT</div><h1>&#10022; Ask Victoria</h1><p>Ask questions about sales, revenue, products and markets.</p>
-            <div class="suggestions"><button class="suggestion" onclick="askSuggestion('Give me a sales summary for September 2026')">Give me a sales summary</button><button class="suggestion" onclick="askSuggestion('Which market performed best in September 2026?')">Which market is performing best?</button><button class="suggestion" onclick="askSuggestion('Show top-selling products in September 2026')">Show top-selling products</button><button class="suggestion" onclick="askSuggestion('How is revenue trending in September 2026?')">How is revenue trending?</button></div>
-            <form id="chatForm" class="chat-input"><input id="questionInput" type="text" autocomplete="off" maxlength="2000" aria-label="Sales question" placeholder="Ask a sales question..." required><button type="submit" id="sendButton" class="send-btn">Send &uarr;</button></form>
-            <div id="responseBox" class="reply" role="status" aria-live="polite">Ask a sales question to get started.</div>
-          </div>
-          <p class="notice">Powered by locally hosted Qwen3 8B and FastAPI. Answers currently use the sample sales database, not Victoria's production data. Confirm AI-generated figures against the dashboard.</p>
-        </section>
-        <footer class="footer"><span><strong>VICTORIA</strong> &middot; Sales intelligence, made simple.</span><span>Development MVP &middot; Sample data</span></footer>
-      </div>
-    </main>
+<div class="app">
+
+<aside class="sidebar">
+
+  <div class="brand">
+    <div class="brand-logo">V</div>
+    <div>
+      <strong>VICTORIA</strong>
+      <small>Sales Intelligence</small>
+    </div>
   </div>
-  <script>
-    'use strict';
-    const $ = id => document.getElementById(id);
-    function showPage(page){
-      const chat = page === 'chat';
-      $('overviewPage').classList.toggle('hidden',chat);
-      $('chatPage').classList.toggle('hidden',!chat);
-      $('navOverview').classList.toggle('active',!chat);
-      $('navChat').classList.toggle('active',chat);
-      $('breadcrumb').textContent='Workspace / '+(chat?'Ask Victoria':'Sales overview');
-      if(chat) $('questionInput').focus();
+
+  <div class="nav-label">WORKSPACE</div>
+
+  <nav class="nav">
+    <button id="navOverview" class="active" type="button"
+      onclick="showPage('overview')">
+      &#9633; &nbsp; Sales overview
+    </button>
+
+    <button id="navChat" type="button"
+      onclick="showPage('chat')">
+      &#10022; &nbsp; Ask Victoria
+    </button>
+  </nav>
+
+  <div class="user">
+    <div class="avatar">V</div>
+    <div>
+      <strong>Victoria workspace</strong>
+      <small>Sales intelligence</small>
+    </div>
+  </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div id="breadcrumb">Workspace / Sales overview</div>
+  <span class="chip">Victoria AI MVP</span>
+</header>
+
+<div class="content">
+
+<section id="overviewPage">
+
+  <div class="hero">
+    <div class="eyebrow">VICTORIA &middot; SALES INTELLIGENCE</div>
+    <h1>Sales overview</h1>
+    <p>
+      Review sample revenue, orders, units sold
+      and market performance.
+    </p>
+
+    <label for="monthSelect">Reporting month &nbsp;</label>
+
+    <select id="monthSelect" class="month-control">
+      <option value="2026-09">September 2026</option>
+      <option value="2026-08">August 2026</option>
+      <option value="2026-07">July 2026</option>
+    </select>
+  </div>
+
+  <div class="kpis">
+
+    <div class="card">
+      <div class="kpi-label">Revenue</div>
+      <div id="kpiRevenue" class="kpi-value">...</div>
+      <div class="kpi-sub">Sample sales data</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-label">Orders</div>
+      <div id="kpiOrders" class="kpi-value">...</div>
+      <div class="kpi-sub">Order count</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-label">Units sold</div>
+      <div id="kpiUnits" class="kpi-value">...</div>
+      <div class="kpi-sub">Units</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-label">Average order value</div>
+      <div id="kpiAov" class="kpi-value">...</div>
+      <div id="growthText" class="kpi-sub">Monthly KPI</div>
+    </div>
+
+  </div>
+
+  <div class="panels">
+
+    <div class="card">
+      <div class="panel-title">Revenue by market</div>
+      <div class="panel-sub">Sample database</div>
+      <div id="marketBars"></div>
+    </div>
+
+    <div class="card">
+      <div class="panel-title">Top products</div>
+      <div class="panel-sub">Sample product performance</div>
+      <div id="productList"></div>
+    </div>
+
+  </div>
+
+  <div id="overviewStatus" class="status" role="status"></div>
+
+</section>
+
+
+<section id="chatPage" class="hidden">
+
+  <div class="hero chat-hero">
+
+    <div class="eyebrow">&#10022; REAL SQL REPORTING</div>
+
+    <h1>Ask Victoria</h1>
+
+    <p>
+      Ask about transaction counts, reporting periods
+      and categories from Victoria's SQL Server.
+    </p>
+
+    <div class="suggestions">
+
+      <button class="suggestion" type="button"
+        onclick="askSuggestion('How many transactions were recorded in the R/A/N category in September 2026?')">
+        September transactions
+      </button>
+
+      <button class="suggestion" type="button"
+        onclick="askSuggestion('Compare transaction categories between September 2025 and September 2026')">
+        Compare years
+      </button>
+
+      <button class="suggestion" type="button"
+        onclick="askSuggestion('What is the net transaction value of the R/A/N category in September 2026?')">
+        Transaction value
+      </button>
+
+      <button class="suggestion" type="button"
+        onclick="askSuggestion('What transaction categories are recorded in September 2026?')">
+        Transaction categories
+      </button>
+
+    </div>
+
+    <form id="chatForm" class="chat-input">
+
+      <input
+        id="questionInput"
+        type="text"
+        maxlength="2000"
+        autocomplete="off"
+        placeholder="Ask Victoria a question..."
+        aria-label="Sales question"
+        required
+      >
+
+      <button type="submit" id="sendButton" class="send-btn">
+        Send &#8593;
+      </button>
+
+    </form>
+
+    <div
+      id="responseBox"
+      class="reply"
+      role="status"
+      aria-live="polite">
+      Ask a question to get started.
+    </div>
+
+  </div>
+
+  <p class="notice">
+    Powered by FastAPI, Ollama Qwen3 and SQL Server.
+    Real-data answers currently cover preliminary
+    September transaction summaries.
+    Transaction-code meanings and revenue definitions
+    still require validation.
+  </p>
+
+</section>
+
+
+<footer class="footer">
+  <span>
+    <strong>VICTORIA</strong> &middot;
+    Sales intelligence, made simple.
+  </span>
+
+  <span>
+    Development MVP &middot;
+    Demo dashboard / Preliminary SQL chatbot
+  </span>
+</footer>
+
+</div>
+</main>
+</div>
+
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+
+// PAGE NAVIGATION
+
+function showPage(page) {
+  const chat = page === "chat";
+
+  $("overviewPage").classList.toggle("hidden", chat);
+  $("chatPage").classList.toggle("hidden", !chat);
+
+  $("navOverview").classList.toggle("active", !chat);
+  $("navChat").classList.toggle("active", chat);
+
+  $("breadcrumb").textContent =
+    "Workspace / " + (chat ? "Ask Victoria" : "Sales overview");
+
+  if (chat) $("questionInput").focus();
+}
+
+
+// DASHBOARD FORMATTING
+
+function money(value, currency = "USD") {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency,
+    maximumFractionDigits: 2
+  }).format(Number(value) || 0);
+}
+
+
+// DISPLAY DASHBOARD
+
+function displayOverview(data) {
+  const s = data.summary || {};
+  const currency = data.currency || "USD";
+
+  $("kpiRevenue").textContent = money(s.revenue, currency);
+
+  $("kpiOrders").textContent =
+    (s.orders ?? "\u2014").toLocaleString();
+
+  $("kpiUnits").textContent =
+    (s.units_sold ?? "\u2014").toLocaleString();
+
+  $("kpiAov").textContent =
+    money(s.average_order_value, currency);
+
+  $("growthText").textContent =
+    s.revenue_growth_percent == null
+      ? "Monthly KPI"
+      : "Revenue growth: " + s.revenue_growth_percent + "%";
+
+  const markets = data.markets || [];
+  const max = Math.max(
+    1,
+    ...markets.map(m => Number(m.revenue) || 0)
+  );
+
+  $("marketBars").replaceChildren();
+
+  for (const market of markets) {
+    const row = document.createElement("div");
+    row.className = "barrow";
+
+    const name = document.createElement("span");
+    name.textContent = market.market;
+
+    const track = document.createElement("div");
+    track.className = "track";
+
+    const fill = document.createElement("div");
+    fill.className = "fill";
+
+    fill.style.width =
+      (100 * Number(market.revenue || 0) / max) + "%";
+
+    track.appendChild(fill);
+
+    const value = document.createElement("strong");
+    value.textContent = money(market.revenue, currency);
+
+    row.append(name, track, value);
+    $("marketBars").appendChild(row);
+  }
+
+  if (!markets.length) {
+    $("marketBars").textContent = "No market data available.";
+  }
+
+  const products = [...(data.products || [])]
+    .sort((a, b) => Number(b.revenue) - Number(a.revenue));
+
+  $("productList").replaceChildren();
+
+  for (const product of products) {
+    const row = document.createElement("div");
+    row.className = "listrow";
+
+    const name = document.createElement("span");
+    name.textContent = product.product;
+
+    const value = document.createElement("strong");
+    value.textContent = money(product.revenue, currency);
+
+    row.append(name, value);
+    $("productList").appendChild(row);
+  }
+
+  if (!products.length) {
+    $("productList").textContent = "No product data available.";
+  }
+}
+
+
+// LOAD DASHBOARD
+
+async function loadOverview() {
+  const month = $("monthSelect").value;
+
+  $("overviewStatus").textContent = "Loading sample sales data...";
+
+  try {
+    const response = await fetch(
+      "/api/sales/overview?month=" + encodeURIComponent(month),
+      { signal: AbortSignal.timeout(15000) }
+    );
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const data = await response.json();
+
+    if (!data.has_data) {
+      $("overviewStatus").textContent =
+        "No sample sales data for " + month;
+
+      $("marketBars").textContent = "No data available.";
+      $("productList").textContent = "No data available.";
+
+      ["kpiRevenue", "kpiOrders", "kpiUnits", "kpiAov"]
+        .forEach(id => $(id).textContent = "\u2014");
+
+      return;
     }
-    const money = (value,currency='USD') => new Intl.NumberFormat('en-US',{style:'currency',currency,maximumFractionDigits:2}).format(Number(value)||0);
-    function displayOverview(data){
-      const s=data.summary||{};const currency=data.currency||'USD';
-      $('kpiRevenue').textContent=money(s.revenue,currency);
-      $('kpiOrders').textContent=(s.orders??'\u2014').toLocaleString();
-      $('kpiUnits').textContent=(s.units_sold??'\u2014').toLocaleString();
-      $('kpiAov').textContent=money(s.average_order_value,currency);
-      $('growthText').textContent=s.revenue_growth_percent==null?'Monthly KPI':`Revenue growth: ${s.revenue_growth_percent}%`;
-      const markets=Array.isArray(data.markets)?data.markets:[];
-      const max=Math.max(1,...markets.map(x=>Number(x.revenue)||0));
-      $('marketBars').replaceChildren();
-      markets.forEach(m=>{
-        const line=document.createElement('div');line.className='barrow';
-        const name=document.createElement('span');name.textContent=m.market;
-        const track=document.createElement('div');track.className='track';
-        const fill=document.createElement('div');fill.className='fill';fill.style.width=`${100*(Number(m.revenue)||0)/max}%`;
-        track.appendChild(fill);const value=document.createElement('strong');value.textContent=money(m.revenue,currency);line.append(name,track,value);$('marketBars').appendChild(line);
-      });
-      if(!markets.length) $('marketBars').textContent='No market data available for this month.';
-      const products=Array.isArray(data.products)?[...data.products].sort((a,b)=>b.revenue-a.revenue):[];
-      $('productList').replaceChildren();products.forEach(p=>{const line=document.createElement('div');line.className='listrow';const n=document.createElement('span');n.textContent=p.product;const v=document.createElement('strong');v.textContent=money(p.revenue,currency);line.append(n,v);$('productList').appendChild(line);});
-      if(!products.length) $('productList').textContent='No product data available for this month.';
+
+    displayOverview(data);
+
+    $("overviewStatus").textContent =
+      "Showing sample sales data for " + month;
+
+  } catch (err) {
+    $("overviewStatus").textContent =
+      "Unable to load dashboard: " + err.message;
+  }
+}
+
+
+// SAFE INLINE FORMATTING
+
+function appendFormattedText(element, text) {
+  const parts = String(text).split(
+    /(\*\*[^*]+\*\*|`[^`]+`)/g
+  );
+
+  for (const part of parts) {
+    if (part.startsWith("**") && part.endsWith("**")
+        && part.length > 4) {
+
+      const strong = document.createElement("strong");
+      strong.textContent = part.slice(2, -2);
+      element.appendChild(strong);
+
+    } else if (
+      part.startsWith("`") &&
+      part.endsWith("`") &&
+      part.length > 2
+    ) {
+
+      const code = document.createElement("code");
+      code.textContent = part.slice(1, -1);
+      element.appendChild(code);
+
+    } else {
+      element.appendChild(
+        document.createTextNode(part)
+      );
     }
-    async function loadOverview(){
-      const month=$('monthSelect').value;$('overviewStatus').textContent='Loading sales data\u2026';
-      try{
-        const response=await fetch(`/api/sales/overview?month=${encodeURIComponent(month)}`,{signal:AbortSignal.timeout(15000)});
-        if(!response.ok) throw Error(`Server returned ${response.status}`);
-        const data=await response.json();
-        if(!data.has_data){$('overviewStatus').textContent=`No sales data for ${month}.`;$('marketBars').textContent='No data available.';$('productList').textContent='No data available.';['kpiRevenue','kpiOrders','kpiUnits','kpiAov'].forEach(id=>$(id).textContent='\u2014');return;}
-        displayOverview(data);$('overviewStatus').textContent=`Showing ${data.mode==='sample_database'?'sample':'available'} sales data for ${month}.`;
-      }catch(e){$('overviewStatus').textContent=`Could not load sales data: ${e.message}`;}
+  }
+}
+
+
+// FORMAT AI RESPONSE
+
+function renderVictoriaAnswer(answer) {
+  const box = $("responseBox");
+  box.replaceChildren();
+
+  const lines = String(answer).split(/\r?\n/);
+
+  let list = null;
+  let table = null;
+  let codeBlock = false;
+  let codeLines = [];
+
+  function addCode() {
+    const pre = document.createElement("pre");
+    const code = document.createElement("code");
+
+    code.textContent = codeLines.join("\n");
+    pre.appendChild(code);
+    box.appendChild(pre);
+
+    codeLines = [];
+  }
+
+  for (const raw of lines) {
+    const line = raw.trim();
+
+    if (line.startsWith("```")) {
+      if (codeBlock) addCode();
+
+      codeBlock = !codeBlock;
+      table = null;
+      list = null;
+      continue;
     }
-    function askSuggestion(question){showPage('chat');$('questionInput').value=question;$('chatForm').requestSubmit();}
-    async function sendQuestion(event){event.preventDefault();const question=$('questionInput').value.trim();if(!question||$('sendButton').disabled)return;
-      $('sendButton').disabled=true;$('responseBox').setAttribute('aria-busy','true');$('responseBox').textContent='Victoria is analyzing your question\u2026';
-      try{
-        const response=await fetch('/api/chat/real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question}),signal:AbortSignal.timeout(125000)});
-        const data=await response.json();
-        if(!response.ok)throw Error(typeof data.detail==='string'?data.detail:`Server returned ${response.status}`);
-        $('responseBox').textContent='Victoria: '+(data.answer||'No response was returned.');
-      }catch(e){$('responseBox').textContent=e.name==='TimeoutError'?'The AI response timed out. Check that Ollama is running.':`Unable to get an answer: ${e.message}`;}
-      finally{$('sendButton').disabled=false;$('responseBox').setAttribute('aria-busy','false');}
+
+    if (codeBlock) {
+      codeLines.push(raw);
+      continue;
     }
-    $('chatForm').addEventListener('submit',sendQuestion);
-    $('monthSelect').addEventListener('change',loadOverview);
-    showPage('overview');loadOverview();
-  </script>
+
+    if (!line) {
+      list = null;
+      table = null;
+      continue;
+    }
+
+    const heading = line.match(/^(#{1,4})\s+(.+)$/);
+
+    if (heading) {
+      list = null;
+      table = null;
+
+      const level = Math.min(heading[1].length + 1, 4);
+      const h = document.createElement("h" + level);
+
+      appendFormattedText(h, heading[2]);
+      box.appendChild(h);
+      continue;
+    }
+
+    if (/^(-{3,}|\*{3,})$/.test(line)) {
+      list = null;
+      table = null;
+      box.appendChild(document.createElement("hr"));
+      continue;
+    }
+
+    // Markdown tables
+
+    if (line.startsWith("|") && line.endsWith("|")) {
+      const cells = line.slice(1, -1)
+        .split("|")
+        .map(value => value.trim());
+
+      const isSeparator =
+        cells.length > 0 &&
+        cells.every(c => /^:?-{3,}:?$/.test(c));
+
+      if (isSeparator) continue;
+
+      list = null;
+
+      if (!table) {
+        table = document.createElement("table");
+        box.appendChild(table);
+      }
+
+      const tr = document.createElement("tr");
+      const isHeader = table.rows.length === 0;
+
+      for (const cell of cells) {
+        const td = document.createElement(isHeader ? "th" : "td");
+        appendFormattedText(td, cell);
+        tr.appendChild(td);
+      }
+
+      table.appendChild(tr);
+      continue;
+    }
+
+    table = null;
+
+    // Bulleted and numbered lists
+
+    const bullet = line.match(/^[-*]\s+(.+)$/);
+    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
+
+    if (bullet || numbered) {
+      const tag = numbered ? "ol" : "ul";
+
+      if (!list || list.tagName.toLowerCase() !== tag) {
+        list = document.createElement(tag);
+        box.appendChild(list);
+      }
+
+      const li = document.createElement("li");
+      appendFormattedText(li, numbered ? numbered[1] : bullet[1]);
+
+      list.appendChild(li);
+      continue;
+    }
+
+    list = null;
+
+    if (line.startsWith("> ")) {
+      const quote = document.createElement("blockquote");
+      appendFormattedText(quote, line.slice(2));
+      box.appendChild(quote);
+      continue;
+    }
+
+    const p = document.createElement("p");
+    appendFormattedText(p, line);
+    box.appendChild(p);
+  }
+
+  if (codeBlock && codeLines.length) addCode();
+
+  if (!box.childNodes.length) {
+    box.textContent = "No response was returned.";
+  }
+}
+
+
+// CHAT SUGGESTIONS
+
+function askSuggestion(question) {
+  showPage("chat");
+  $("questionInput").value = question;
+  $("chatForm").requestSubmit();
+}
+
+
+// SEND QUESTION TO REAL SQL AGENT
+
+async function sendQuestion(event) {
+  event.preventDefault();
+
+  const question = $("questionInput").value.trim();
+
+  if (!question || $("sendButton").disabled) return;
+
+  $("sendButton").disabled = true;
+  $("responseBox").setAttribute("aria-busy", "true");
+  $("responseBox").textContent =
+    "Victoria is analyzing your question...";
+
+  try {
+    const response = await fetch("/api/chat/real", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ question }),
+      signal: AbortSignal.timeout(125000)
+    });
+
+    if (!response.ok) {
+      throw new Error("Server returned " + response.status);
+    }
+
+    const data = await response.json();
+
+    renderVictoriaAnswer(
+      data.answer || "No response was returned."
+    );
+
+  } catch (err) {
+    $("responseBox").textContent =
+      "Unable to answer your question: " + err.message;
+
+  } finally {
+    $("sendButton").disabled = false;
+    $("responseBox").removeAttribute("aria-busy");
+  }
+}
+
+
+// EVENTS
+
+$("chatForm").addEventListener("submit", sendQuestion);
+$("monthSelect").addEventListener("change", loadOverview);
+
+
+// START APP
+
+loadOverview();
+</script>
+
 </body>
 </html>
-
