@@ -58,3 +58,29 @@ fix_ui.py
 
 # Local configuration
 .vscode/
+
+# Credentials
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Company databases and backups
+*.db
+*.sqlite3
+*.bak
+*.mdf
+*.ldf
+*.rar
+
+# Temporary files
+*.backup.py
+*.backup.html
+*.before-*.py
+*.before-*.html
+fix_ui.py
